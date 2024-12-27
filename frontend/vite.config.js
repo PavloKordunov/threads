@@ -8,5 +8,15 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@chakra-ui/react", "@emotion/react", "@emotion/styled", "framer-motion"],
   },
-  "react/prop-types": "off"
+  "react/prop-types": "off",
+  server: {
+    port: 3000,
+    proxy: {
+      "/api" : {
+        target: "http://localhost:5000",
+        changeOrigin: 'true',
+        secure: "false"
+      }
+    }
+  }
 })
