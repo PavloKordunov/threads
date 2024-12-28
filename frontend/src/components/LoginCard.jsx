@@ -106,7 +106,7 @@ const[loading, setLoading] = useState(false)
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText="Submitting"
+                loadingText="Logging in"
                 size="lg"
                 bg={useColorModeValue('gray.600', 'gray.700')}
                 color={'white'}
@@ -114,7 +114,7 @@ const[loading, setLoading] = useState(false)
                   bg: useColorModeValue('gray.700', 'gray.800'),
                 }}
                   onClick={handleLogin}
-                  onLoad={loading}
+                  isLoading={loading}
                 >
                 Login
               </Button>

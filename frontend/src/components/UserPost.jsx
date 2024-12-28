@@ -4,7 +4,7 @@ import {BsThreeDots} from "react-icons/bs";
 import Actions from "./Actions.jsx";
 import {useState} from "react";
 
-const UserPage = ({postImage, postTitle, likes, replies}) => {
+const UserPost = ({postImage, postTitle, likes, replies}) => {
 
     const [liked, setLiked] = useState(false);
 
@@ -78,4 +78,4 @@ const UserPage = ({postImage, postTitle, likes, replies}) => {
     )
 }
 
-export default UserPage;
+export default UserPost;

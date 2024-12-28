@@ -152,7 +152,7 @@ console.log('following:', following);
 
         const feedPost = await Post.find({postedBy: {$in: following}}).sort({createdAt: -1})
 
-        res.status(200).json({feedPost})
+        res.status(200).json(feedPost)
     }catch(error){
         res.status(500).json({error: error.message})
         console.log('Error in getFeedPost', error.message)
