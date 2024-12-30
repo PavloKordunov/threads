@@ -35,7 +35,7 @@ const createPost = async(req, res) => {
         const newPost = new Post({postedBy, text, img})
         await newPost.save()
 
-        res.status(201).json({message: 'Post created successfully', newPost})
+        res.status(201).json(newPost)
     } catch(error){
         res.status(500).json({error: error.message})
         console.log('Error in createPost', error.message)
@@ -50,10 +50,31 @@ const getPost = async(req, res) => {
             return res.status(404).json({error: "post not found"})
         }
 
-        res.status(200).json({post})
+        res.status(200).json(post)
     }catch(error){
         res.status(500).json({error: error.message})
         console.log('Error in getPost', error.message)
+     }
+}
+
+const getUserPosts = async(req, res) => {
+    const {username} = req.params
+    try{
+        const user = await User.findOne({username})
+        if(!user){
+            return res.status(404).json({error: "user not found"})
+        }
+
+        const posts = await Post.find({postedBy: user._id}).sort({ createdAt: -1 })
+
+        if(!posts){
+            return res.status(404).json({error: "post not found"})
+        }
+
+        res.status(200).json(posts)
+    } catch(error){
+        res.status(500).json({error: error.message})
+        console.log('Error in getUserPost', error.message)
      }
 }
 
@@ -69,6 +90,11 @@ const deletePost = async(req, res) => {
             return res.status(400).json({error: "Unauthorized to delete a post"})
         }
 
+        if(post.img){
+            const imgId = post.img.split('/').pop().split('.')[0]
+            await cloudinary.uploader.destroy(imgId)
+        }
+        
         await Post.findByIdAndDelete(req.params.id)
 
         res.status(200).json({message: 'Post delete successfully'})
@@ -128,7 +154,7 @@ const replyToPost = async(req, res) => {
         post.replies.push(reply)
         await post.save()
 
-        res.status(200).json({message: 'Reply send successfully', post})
+        res.status(200).json(post)
 
     } catch(error){
         res.status(500).json({error: error.message})
@@ -165,5 +191,6 @@ export {
     deletePost,
     likeUnlikePost,
     replyToPost,
-    getFeedPost
+    getFeedPost,
+    getUserPosts
 }
